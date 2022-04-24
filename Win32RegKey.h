@@ -2,7 +2,8 @@
 #define WIN32REGCPP_WIN32REGKEY_H
 
 #include <string>
-#include <windows.h>
+#include <memory>
+#include <Windows.h>
 
 #include "Win32RegEnumeration.h"
 
@@ -16,8 +17,8 @@ public:
 
     std::string getStringValue(const std::string& name) const;
     std::int32_t getInt32Value(const std::string& name) const;
-    BYTE * getValue(_In_ const std::string& name,_Out_ LPDWORD type,_Out_ LPDWORD size) const;
-    BYTE * getValue(_In_ const std::string& name,_Out_ DWORD type,DWORD size) const;
+    std::unique_ptr<BYTE[]> getValue(_In_ const std::string& name,_Out_ LPDWORD type,_Out_ LPDWORD size) const;
+    std::unique_ptr<BYTE[]> getValue(_In_ const std::string& name,_Out_ DWORD type,DWORD size) const;
 
     void setValue(const std::string& name,const std::string& value) const;
     void setValue(const std::string& name,const DWORD value) const;

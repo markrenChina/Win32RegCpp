@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <utility>
+#include <memory>
 
 Win32RegKey::Win32RegKey(const HKEY root, std::string path) : root(root), path(std::move(path)) {}
 
@@ -34,7 +35,7 @@ void Win32RegKey::setValue(const std::string& name,DWORD type, const BYTE *value
     RegCloseKey(hkey);
 }
 
-BYTE* Win32RegKey::getValue(const std::string& name, LPDWORD type,LPDWORD size) const {
+std::unique_ptr<BYTE[]> Win32RegKey::getValue(const std::string& name, LPDWORD type,LPDWORD size) const {
     HKEY hkey;
     /* open the registry key
      * LONG RegOpenKeyEx(
@@ -63,19 +64,19 @@ BYTE* Win32RegKey::getValue(const std::string& name, LPDWORD type,LPDWORD size) 
         throw std::runtime_error("Query value key failed");
     }
     /* get memory to hold the value */
-    //todo 把回收内存的工作交给API用户，需要优化
-    BYTE* cret = (BYTE*)malloc(*size);
+    std::unique_ptr<BYTE[]> cret(new BYTE[*size]);
+    //BYTE* cret = (BYTE*)malloc(*size);
 
     /* read the value */
-    if (RegQueryValueExA(hkey, name.c_str(), nullptr, type, cret, size) != ERROR_SUCCESS){
-        free(cret);
+    if (RegQueryValueExA(hkey, name.c_str(), nullptr, type, &cret[0], size) != ERROR_SUCCESS){
+        //free(cret);
         RegCloseKey(hkey);
         throw std::runtime_error("Query value key failed");
     }
     return cret;
 }
 
-BYTE *Win32RegKey::getValue(const std::string &name, DWORD type, DWORD size) const {
+std::unique_ptr<BYTE[]> Win32RegKey::getValue(const std::string &name, DWORD type, DWORD size) const {
     HKEY hkey;
     /* open the registry key */
     if (RegOpenKeyExA(root, path.c_str(), 0, KEY_READ, &hkey) != ERROR_SUCCESS){
@@ -87,12 +88,12 @@ BYTE *Win32RegKey::getValue(const std::string &name, DWORD type, DWORD size) con
 //        throw std::runtime_error("Query value key failed");
 //    }
     /* get memory to hold the value */
-    //todo 把回收内存的工作交给API用户，需要优化
-    BYTE* cret = (BYTE*)malloc(size);
+    std::unique_ptr<BYTE[]> cret(new BYTE[size]);
+    //BYTE* cret = (BYTE*)malloc(size);
 
     /* read the value */
-    if (RegQueryValueExA(hkey, name.c_str(), nullptr, &type, cret, &size) != ERROR_SUCCESS){
-        free(cret);
+    if (RegQueryValueExA(hkey, name.c_str(), nullptr, &type, &cret[0], &size) != ERROR_SUCCESS){
+        //free(cret);
         RegCloseKey(hkey);
         throw std::runtime_error("Query value key failed");
     }
@@ -114,17 +115,16 @@ Win32RegKey::~Win32RegKey() {
 std::string Win32RegKey::getStringValue(const std::string &name) const {
     DWORD type = REG_SZ;
     DWORD size;
-    BYTE * value = getValue(name,&type, &size);
-    std::string res = reinterpret_cast<const char *>(value);
-    free(value);
+    std::unique_ptr<BYTE[]> value = getValue(name,&type, &size);
+    std::string res = reinterpret_cast<const char *>(&value[0]);
     return res;
 }
 
 std::int32_t Win32RegKey::getInt32Value(const std::string &name) const {
     DWORD type = REG_DWORD;
-    BYTE * value = getValue(name,type, 4);
-    int32_t res = *(int32_t *) value;
-    free(value);
+    std::unique_ptr<BYTE[]> value = getValue(name,type, 4);
+    int32_t res = *(int32_t *) (&value[0]);
+    //free(value);
     return res;
 }
 

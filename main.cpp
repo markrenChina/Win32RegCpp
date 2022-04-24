@@ -27,11 +27,11 @@ int main(){
         }
         DWORD type;
         DWORD size;
-        BYTE * value3 = key->getValue(name,&type,&size);
+        std::unique_ptr<BYTE[]> value3 = key->getValue(name,&type,&size);
         std::cout << name << " : " ;
         switch (type) {
             case REG_SZ: std::cout << value3; break;
-            case REG_DWORD: std::cout << *(int*)value3; break;
+            case REG_DWORD: std::cout << *(int*)(&value3[0]); break;
             case REG_BINARY:
                 for (int i = 0; i < size; i++) {
                     std::cout << (value3[i] & 0xFFFFFFFF) << " ";
@@ -39,7 +39,7 @@ int main(){
             default:;
         }
         std::cout << std::endl;
-        free(value3);
+        //free(value3);
     }
 
     return 0;
