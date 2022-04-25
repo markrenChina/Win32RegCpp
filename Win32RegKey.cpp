@@ -1,8 +1,7 @@
-#include "Win32RegKey.h"
-
 #include <stdexcept>
 #include <utility>
-#include <memory>
+
+#include "Win32RegKey.h"
 
 Win32RegKey::Win32RegKey(const HKEY root, std::string path) : root(root), path(std::move(path)) {}
 
@@ -101,16 +100,13 @@ std::unique_ptr<BYTE[]> Win32RegKey::getValue(const std::string &name, DWORD typ
 }
 
 
-Win32RegEnumeration* Win32RegKey::names() {
+Win32RegEnumeration::Ptr Win32RegKey::names() {
     if (enumeration == nullptr){
-        enumeration = new Win32RegEnumeration(root,path);
+        enumeration = std::make_shared<Win32RegEnumeration>(root,path) ;
     }
     return enumeration;
 }
 
-Win32RegKey::~Win32RegKey() {
-    delete enumeration;
-}
 
 std::string Win32RegKey::getStringValue(const std::string &name) const {
     DWORD type = REG_SZ;

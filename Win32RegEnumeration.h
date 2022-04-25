@@ -6,14 +6,16 @@
 #define WIN32REGCPP_WIN32REGENUMERATION_H
 
 #include <string>
-#include <windows.h>
-
+#include <Windows.h>
+#include <memory>
+#include <iostream>
 
 /**
  * 具体某个注册表路径下的k，v对象集合的迭代器
  */
 class Win32RegEnumeration {
 public:
+    using Ptr = std::shared_ptr<Win32RegEnumeration>;
     Win32RegEnumeration(HKEY root,std::string path);
     ~Win32RegEnumeration() = default;
     std::string nextElement();

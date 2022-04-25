@@ -3,20 +3,21 @@
 //
 #include "Win32RegKey.h"
 #include <iostream>
+#include <memory>
 
 
 int main(){
 
-    auto key = new Win32RegKey(HKEY_CURRENT_USER,"Software\\JavaSoft\\Java Runtime Environment");
-    key->setValue("custom","markren china");
+    Win32RegKey::Ptr key = std::make_shared<Win32RegKey>(HKEY_LOCAL_MACHINE,"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0");
+    /*key->setValue("custom","markren china");
     std::string value = key->getStringValue("custom");
     std::cout << value << std::endl;
 
     key->setValue("custom2",1111222);
     int32_t value2 = key->getInt32Value("custom2");
-    std::cout << value2 << std::endl;
+    std::cout << value2 << std::endl;*/
 
-    Win32RegEnumeration* e = key->names();
+    Win32RegEnumeration::Ptr e = key->names();
     while (e->hasMoreElements()){
         std::string name;
         try{
