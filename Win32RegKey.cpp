@@ -1,3 +1,4 @@
+#include <memory>
 #include <stdexcept>
 #include <utility>
 
@@ -67,7 +68,7 @@ std::unique_ptr<BYTE[]> Win32RegKey::getValue(const std::string& name, LPDWORD t
     //BYTE* cret = (BYTE*)malloc(*size);
 
     /* read the value */
-    if (RegQueryValueExA(hkey, name.c_str(), nullptr, type, &cret[0], size) != ERROR_SUCCESS){
+    if (RegQueryValueExA(hkey, name.c_str(), nullptr, type, cret.get(), size) != ERROR_SUCCESS){
         //free(cret);
         RegCloseKey(hkey);
         throw std::runtime_error("Query value key failed");
@@ -91,7 +92,7 @@ std::unique_ptr<BYTE[]> Win32RegKey::getValue(const std::string &name, DWORD typ
     //BYTE* cret = (BYTE*)malloc(size);
 
     /* read the value */
-    if (RegQueryValueExA(hkey, name.c_str(), nullptr, &type, &cret[0], &size) != ERROR_SUCCESS){
+    if (RegQueryValueExA(hkey, name.c_str(), nullptr, &type, cret.get(), &size) != ERROR_SUCCESS){
         //free(cret);
         RegCloseKey(hkey);
         throw std::runtime_error("Query value key failed");
@@ -100,9 +101,9 @@ std::unique_ptr<BYTE[]> Win32RegKey::getValue(const std::string &name, DWORD typ
 }
 
 
-Win32RegEnumeration::Ptr Win32RegKey::names() {
+Win32RegEnumeration::Ptr& Win32RegKey::names() {
     if (enumeration == nullptr){
-        enumeration = std::make_shared<Win32RegEnumeration>(root,path) ;
+        enumeration = std::make_unique<Win32RegEnumeration>(root,path);
     }
     return enumeration;
 }

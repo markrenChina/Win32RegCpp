@@ -17,7 +17,7 @@ int main(){
     int32_t value2 = key->getInt32Value("custom2");
     std::cout << value2 << std::endl;*/
 
-    Win32RegEnumeration::Ptr e = key->names();
+    Win32RegEnumeration::Ptr& e = key->names();
     while (e->hasMoreElements()){
         std::string name;
         try{

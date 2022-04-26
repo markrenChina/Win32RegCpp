@@ -15,7 +15,7 @@
  */
 class Win32RegEnumeration {
 public:
-    using Ptr = std::shared_ptr<Win32RegEnumeration>;
+    using Ptr = std::unique_ptr<Win32RegEnumeration>;
     Win32RegEnumeration(HKEY root,std::string path);
     ~Win32RegEnumeration() = default;
     std::string nextElement();
