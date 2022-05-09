@@ -6,7 +6,7 @@
 
 Win32RegKey::Win32RegKey(const HKEY root, std::string path) : root(root), path(std::move(path)) {}
 
-//×Ö·û´®ÀàĞÍ
+//å­—ç¬¦ä¸²ç±»å‹
 void Win32RegKey::setValue(const std::string& name,const std::string& value) const {
     setValue(name,REG_SZ,reinterpret_cast<const BYTE *>(value.c_str()),(value.size()+1));
 }
@@ -15,7 +15,7 @@ void Win32RegKey::setValue(const std::string& name, BYTE *value,DWORD size) cons
     setValue(name,REG_BINARY,value,size);
 }
 
-//ÕûĞÍ£¬4Î»ÄÚ´æ
+//æ•´å‹ï¼Œ4ä½å†…å­˜
 void Win32RegKey::setValue(const std::string& name, DWORD value) const {
     setValue(name,REG_DWORD,reinterpret_cast<const BYTE *>(&value),4);
 }
@@ -39,11 +39,11 @@ std::unique_ptr<BYTE[]> Win32RegKey::getValue(const std::string& name, LPDWORD t
     HKEY hkey;
     /* open the registry key
      * LONG RegOpenKeyEx(
-     * HKEY hKey, // ĞèÒª´ò¿ªµÄÖ÷¼üµÄÃû³Æ
-     * LPCTSTR lpSubKey, //ĞèÒª´ò¿ªµÄ×Ó¼üµÄÃû³Æ
-     * DWORD ulOptions, // ±£Áô£¬ÉèÎª0
-     * REGSAM samDesired, // °²È«·ÃÎÊ±ê¼Ç£¬Ò²¾ÍÊÇÈ¨ÏŞ
-     * PHKEY phkResult // µÃµ½µÄ½«Òª´ò¿ª¼üµÄ¾ä±ú
+     * HKEY hKey, // éœ€è¦æ‰“å¼€çš„ä¸»é”®çš„åç§°
+     * LPCTSTR lpSubKey, //éœ€è¦æ‰“å¼€çš„å­é”®çš„åç§°
+     * DWORD ulOptions, // ä¿ç•™ï¼Œè®¾ä¸º0
+     * REGSAM samDesired, // å®‰å…¨è®¿é—®æ ‡è®°ï¼Œä¹Ÿå°±æ˜¯æƒé™
+     * PHKEY phkResult // å¾—åˆ°çš„å°†è¦æ‰“å¼€é”®çš„å¥æŸ„
      * )
      */
     if (RegOpenKeyExA(root, path.c_str(), 0, KEY_READ, &hkey) != ERROR_SUCCESS){

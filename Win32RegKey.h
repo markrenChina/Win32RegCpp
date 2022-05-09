@@ -8,7 +8,7 @@
 #include "Win32RegEnumeration.h"
 
 /**
- * 具体某个注册表路径下的k，v对象集合
+ * 鍏蜂綋鏌愪釜娉ㄥ唽琛ㄨ矾寰勪笅鐨刱锛寁瀵硅薄闆嗗悎
  */
 class Win32RegKey {
 public:

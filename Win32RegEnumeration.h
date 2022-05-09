@@ -8,10 +8,9 @@
 #include <string>
 #include <Windows.h>
 #include <memory>
-#include <iostream>
 
 /**
- * 具体某个注册表路径下的k，v对象集合的迭代器
+ * 鍏蜂綋鏌愪釜娉ㄥ唽琛ㄨ矾寰勪笅鐨刱锛寁瀵硅薄闆嗗悎鐨勮凯浠ｅ櫒
  */
 class Win32RegEnumeration {
 public:

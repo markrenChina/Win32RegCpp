@@ -7,8 +7,9 @@
 
 
 int main(){
-
-    Win32RegKey::Ptr key = std::make_shared<Win32RegKey>(HKEY_LOCAL_MACHINE,"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0");
+    system("CHCP 65001");
+    //Win32RegKey::Ptr key = std::make_shared<Win32RegKey>(HKEY_LOCAL_MACHINE,"HARDWARE\\DESCRIPTION\\System\\CentralProcessor\\0");
+    Win32RegKey::Ptr key = std::make_shared<Win32RegKey>(HKEY_LOCAL_MACHINE,"SYSTEM\\CurrentControlSet\\Control\\Session Manager\\Environment");
     /*key->setValue("custom","markren china");
     std::string value = key->getStringValue("custom");
     std::cout << value << std::endl;

@@ -26,14 +26,14 @@ std::string Win32RegEnumeration::nextElement() {
 
     char *cret= (char*)malloc(_maxsize);
     /* find the next name
-     * hKey Long£¬Ò»¸öÒÑ´ò¿ªÏîµÄ¾ä±ú£¬»òÕßÖ¸¶¨Ò»¸ö±ê×¼ÏîÃû
-     * dwIndex Long£¬Óû»ñÈ¡ÖµµÄË÷Òý¡£×¢ÒâµÚÒ»¸öÖµµÄË÷Òý±àºÅÎªÁã
-     * lpValueName String£¬ÓÃÓÚ×°ÔØÎ»ÓÚÖ¸¶¨Ë÷Òý´¦ÖµÃûµÄÒ»¸ö»º³åÇø
-     * lpcbValueName Long£¬ÓÃÓÚ×°ÔØlpValueName»º³åÇø³¤¶ÈµÄÒ»¸ö±äÁ¿¡£Ò»µ©·µ»Ø£¬Ëü»áÉèÎªÊµ¼ÊÔØÈë»º³åÇøµÄ×Ö·ûÊýÁ¿
-     * lpReserved Long£¬Î´ÓÃ£»ÉèÎªÁã
-     * lpType Long£¬ÓÃÓÚ×°ÔØÖµµÄÀàÐÍ´úÂëµÄ±äÁ¿
-     * lpData Byte£¬ÓÃÓÚ×°ÔØÖµÊý¾ÝµÄÒ»¸ö»º³åÇø
-     * lpcbData Long£¬ÓÃÓÚ×°ÔØlpData»º³åÇø³¤¶ÈµÄÒ»¸ö±äÁ¿¡£Ò»µ©·µ»Ø£¬Ëü»áÉèÎªÊµ¼ÊÔØÈë»º³åÇøµÄ×Ö·ûÊýÁ¿
+     * hKey Longï¼Œä¸€ä¸ªå·²æ‰“å¼€é¡¹çš„å¥æŸ„ï¼Œæˆ–è€…æŒ‡å®šä¸€ä¸ªæ ‡å‡†é¡¹å
+     * dwIndex Longï¼Œæ¬²èŽ·å–å€¼çš„ç´¢å¼•ã€‚æ³¨æ„ç¬¬ä¸€ä¸ªå€¼çš„ç´¢å¼•ç¼–å·ä¸ºé›¶
+     * lpValueName Stringï¼Œç”¨äºŽè£…è½½ä½äºŽæŒ‡å®šç´¢å¼•å¤„å€¼åçš„ä¸€ä¸ªç¼“å†²åŒº
+     * lpcbValueName Longï¼Œç”¨äºŽè£…è½½lpValueNameç¼“å†²åŒºé•¿åº¦çš„ä¸€ä¸ªå˜é‡ã€‚ä¸€æ—¦è¿”å›žï¼Œå®ƒä¼šè®¾ä¸ºå®žé™…è½½å…¥ç¼“å†²åŒºçš„å­—ç¬¦æ•°é‡
+     * lpReserved Longï¼Œæœªç”¨ï¼›è®¾ä¸ºé›¶
+     * lpType Longï¼Œç”¨äºŽè£…è½½å€¼çš„ç±»åž‹ä»£ç çš„å˜é‡
+     * lpData Byteï¼Œç”¨äºŽè£…è½½å€¼æ•°æ®çš„ä¸€ä¸ªç¼“å†²åŒº
+     * lpcbData Longï¼Œç”¨äºŽè£…è½½lpDataç¼“å†²åŒºé•¿åº¦çš„ä¸€ä¸ªå˜é‡ã€‚ä¸€æ—¦è¿”å›žï¼Œå®ƒä¼šè®¾ä¸ºå®žé™…è½½å…¥ç¼“å†²åŒºçš„å­—ç¬¦æ•°é‡
      */
     if (RegEnumValue(hkey, index, cret, &_maxsize, nullptr,
                      nullptr, nullptr, nullptr) != ERROR_SUCCESS){
